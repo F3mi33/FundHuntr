@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#15a36b" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="FundHuntr" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="apple-touch-icon" href="icon-192.svg" />
+  <title>Student profile · FundHuntr</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav class="nav">
+    <a href="index.html" style="display:flex; align-items:center; color:inherit; text-decoration:none;" class="brand">
+      <div class="brand-mark"><span>Fund</span><span>Huntr</span></div>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link hide-mobile" href="index.html">Switch type</a>
+      <a class="nav-link" href="discover.html">Skip →</a>
+    </div>
+  </nav>
+
+  <main class="container-narrow">
+    <div class="wizard-shell">
+      <div class="wizard-header">
+        <div class="wizard-title">
+          <div class="profile-icon" data-icon="graduation-cap"></div>
+          <div>
+            <h2>Student profile</h2>
+            <p>The richer your answers, the better the auto-apply.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="progress-track"><div class="progress-fill" data-progress-fill></div></div>
+      <div class="progress-meta">
+        <span data-step-label>Step 1</span>
+        <span data-progress-label>Step 1 of 8</span>
+      </div>
+
+      <div class="wizard-body" data-wizard-body></div>
+
+      <div class="wizard-footer">
+        <button class="btn btn-ghost" data-back>← Back</button>
+        <button class="btn btn-primary" data-next>Next →</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+  <script src="icons.js"></script>
+  <script>
+    /* Country list — abbreviated to top regions; expanded as needed at runtime */
+    const COUNTRIES = [
+      'Argentina', 'Australia', 'Austria', 'Bangladesh', 'Belgium', 'Brazil', 'Cameroon',
+      'Canada', 'Chile', 'China', 'Colombia', 'Czech Republic', 'Denmark', 'Egypt',
+      'Ethiopia', 'Finland', 'France', 'Germany', 'Ghana', 'Greece', 'Hungary', 'India',
+      'Indonesia', 'Iran', 'Ireland', 'Israel', 'Italy', 'Japan', 'Jordan', 'Kenya',
+      'Lebanon', 'Malaysia', 'Mexico', 'Morocco', 'Netherlands', 'New Zealand', 'Nigeria',
+      'Norway', 'Pakistan', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar',
+      'Romania', 'Saudi Arabia', 'Singapore', 'South Africa', 'South Korea', 'Spain',
+      'Sweden', 'Switzerland', 'Tanzania', 'Thailand', 'Tunisia', 'Turkey', 'UAE',
+      'Uganda', 'United Kingdom', 'United States', 'Vietnam', 'Other'
+    ];
+
+    const studentSchema = {
+      steps: [
+        {
+          title: 'About you',
+          subtitle: 'Identity basics used to verify eligibility globally.',
+          fields: [
+            { name: 'firstName', label: 'First name', type: 'text', required: true, autocomplete: 'given-name' },
+            { name: 'lastName', label: 'Last name / surname', type: 'text', required: true, autocomplete: 'family-name' },
+            { name: 'email', label: 'Email', type: 'email', required: true, autocomplete: 'email' },
+            { name: 'phone', label: 'Phone (with country code)', type: 'tel', placeholder: '+44 7700 900000', autocomplete: 'tel' },
+            { name: 'dob', label: 'Date of birth', type: 'date' },
+            { name: 'pronouns', label: 'Pronouns', type: 'select',
+              options: ['She/her', 'He/him', 'They/them', 'Other', 'Prefer not to say'] },
+            { name: 'country', label: 'Country of residence', type: 'select', required: true, options: COUNTRIES },
+            { name: 'nationality', label: 'Nationality / citizenship', type: 'select', required: true, options: COUNTRIES },
+            { name: 'city', label: 'City', type: 'text' },
+            { name: 'region', label: 'State / region / province', type: 'text' },
+            { name: 'residencyStatus', label: 'Residency status (in study country)', type: 'select', full: true,
+              options: [
+                'Citizen', 'Permanent resident', 'Student visa (international)',
+                'Refugee / asylum seeker', 'Stateless', 'Dual citizen', 'Other'
+              ]},
+          ]
+        },
+        {
+          title: 'Education',
+          subtitle: 'Where you are in your academic journey — any system, anywhere.',
+          fields: [
+            { name: 'educationLevel', label: 'Current level', type: 'chips', full: true,
+              options: ['Secondary / High school', 'Pre-university (A-levels, IB, baccalauréat, etc.)', 'Vocational / TVET', 'Undergraduate / Bachelor\'s', 'Postgraduate / Master\'s', 'Doctoral / PhD', 'Professional (MD, JD, MBA…)', 'Post-doctoral'] },
+            { name: 'curriculum', label: 'Curriculum / system', type: 'select', full: true,
+              options: ['IB (International Baccalaureate)', 'A-levels (UK)', 'GCSE / O-levels', 'AP / SAT (US)', 'Baccalauréat (France)', 'Abitur (Germany)', 'CBSE / ICSE / State (India)', 'Gaokao (China)', 'Matura', 'WAEC / NECO (West Africa)', 'KCSE (Kenya)', 'NSC (South Africa)', 'Other / national'] },
+            { name: 'schoolName', label: 'School / institution name', type: 'text' },
+            { name: 'schoolType', label: 'Institution type', type: 'select',
+              options: ['Public university', 'Private university', 'Polytechnic / TVET', 'Community college', 'HBCU / MSI (US)', 'Russell Group (UK)', 'Grandes Écoles (France)', 'Online / hybrid', 'Secondary school', 'Other'] },
+            { name: 'major', label: 'Major / field of study', type: 'text', placeholder: 'Biomedical Engineering' },
+            { name: 'minor', label: 'Minor / specialization', type: 'text' },
+            { name: 'enrollmentStatus', label: 'Enrollment', type: 'select',
+              options: ['Full-time', 'Part-time', 'Not yet enrolled', 'Gap year'] },
+            { name: 'gpa', label: 'GPA / grade average', type: 'text', placeholder: 'e.g. 3.7/4.0 or 78% or First class', hint: 'Use whatever scale your institution uses.' },
+            { name: 'gradDate', label: 'Expected graduation', type: 'date' },
+            { name: 'testScores', label: 'Standardized test scores', type: 'textarea', full: true,
+              placeholder: 'e.g. SAT 1450, IELTS 7.5, JEE 99.2 percentile, Gaokao 660' },
+          ]
+        },
+        {
+          title: 'Background & demographics',
+          subtitle: 'Many awards target specific communities. Sharing only opens doors — never closes them.',
+          callout: 'All optional. Your data stays on this device until you choose to apply.',
+          fields: [
+            { name: 'ethnicity', label: 'Race / ethnicity / heritage', type: 'chips-multi', full: true,
+              options: ['African / Black', 'Arab', 'Asian — East', 'Asian — South', 'Asian — Southeast', 'Caribbean', 'Hispanic / Latino', 'Indigenous / First Nations', 'Jewish', 'Middle Eastern', 'Pacific Islander', 'Roma', 'White / European', 'Multiracial', 'Prefer not to say'] },
+            { name: 'gender', label: 'Gender identity', type: 'select',
+              options: ['Woman', 'Man', 'Non-binary', 'Transgender', 'Other', 'Prefer not to say'] },
+            { name: 'lgbtq', label: 'LGBTQ+ identifying?', type: 'select',
+              options: ['Yes', 'No', 'Prefer not to say'] },
+            { name: 'firstGen', label: 'First-generation university student?', type: 'select',
+              options: ['Yes', 'No', 'Unsure'] },
+            { name: 'disability', label: 'Disability / accessibility need?', type: 'select',
+              options: ['No', 'Yes — physical', 'Yes — sensory', 'Yes — learning', 'Yes — mental health', 'Yes — multiple', 'Prefer not to say'] },
+            { name: 'militaryAffiliation', label: 'Military / armed forces affiliation', type: 'select',
+              options: ['None', 'Active service', 'Veteran / ex-service', 'Reservist', 'Military family / dependent', 'Bereaved family'] },
+            { name: 'religion', label: 'Religious affiliation (optional)', type: 'select',
+              options: ['None / secular', 'Buddhist', 'Christian — Catholic', 'Christian — Orthodox', 'Christian — Protestant', 'Hindu', 'Jewish', 'Muslim', 'Sikh', 'Indigenous / traditional', 'Other', 'Prefer not to say'] },
+            { name: 'careContext', label: 'Care / family context', type: 'select',
+              options: ['None', 'In foster / state care', 'Care leaver', 'Adopted', 'Young carer', 'Estranged from family'] },
+            { name: 'languages', label: 'Languages you speak', type: 'text', full: true,
+              placeholder: 'e.g. English (native), Yoruba (fluent), French (B2)' },
+          ]
+        },
+        {
+          title: 'Financial picture',
+          subtitle: 'Need-based awards depend on these. Use your local currency.',
+          fields: [
+            { name: 'currency', label: 'Reporting currency', type: 'select',
+              options: ['USD ($)', 'EUR (€)', 'GBP (£)', 'INR (₹)', 'NGN (₦)', 'ZAR (R)', 'KES (KSh)', 'AUD (A$)', 'CAD (C$)', 'BRL (R$)', 'JPY (¥)', 'CNY (¥)', 'MXN ($)', 'PHP (₱)', 'IDR (Rp)', 'EGP (E£)', 'AED (د.إ)', 'CHF', 'SEK', 'NOK', 'Other'] },
+            { name: 'householdIncome', label: 'Annual household income (in your currency)', type: 'select',
+              options: ['Lowest 25%', '25–50% percentile', '50–75% percentile', '75–90% percentile', 'Top 10%', 'Prefer not to say'] },
+            { name: 'householdSize', label: 'Household size', type: 'number', min: 1, max: 30 },
+            { name: 'govAidForm', label: 'Government student aid form filed?', type: 'select',
+              hint: 'e.g. FAFSA (US), Student Finance (UK), Centrelink (AU), CRS (Canada), CAF (France)…',
+              options: ['Yes — current year', 'No — eligible', 'Not eligible', 'Plan to file'] },
+            { name: 'needGrantEligible', label: 'Eligible for any need-based government grant?', type: 'select',
+              options: ['Yes', 'No', 'Unsure'] },
+            { name: 'currentAid', label: 'Existing aid you receive', type: 'textarea', full: true,
+              placeholder: 'e.g. £9,250 maintenance loan, full-tuition merit award, Erasmus+ stipend' },
+            { name: 'fundingNeed', label: 'Approximate annual funding gap', type: 'number', placeholder: '15000', hint: 'In the currency you selected above.' },
+            { name: 'workingHours', label: 'Hours/week working alongside studies', type: 'number', min: 0, max: 80 },
+          ]
+        },
+        {
+          title: 'Activities & achievements',
+          subtitle: 'Awards love a story. Be specific.',
+          fields: [
+            { name: 'leadership', label: 'Leadership roles', type: 'textarea', full: true,
+              placeholder: 'e.g. Student union VP, debate team captain, NGO youth board' },
+            { name: 'extracurriculars', label: 'Extracurricular activities', type: 'chips-multi', full: true,
+              options: ['STEM clubs', 'Debate / MUN', 'Performing arts', 'Visual arts', 'Music', 'Student government', 'Cultural / heritage groups', 'Religious / faith groups', 'Sports / athletics', 'Journalism / media', 'Robotics / coding', 'Math team', 'Entrepreneurship', 'Environmental club'] },
+            { name: 'awards', label: 'Awards & honors', type: 'textarea', full: true,
+              placeholder: 'e.g. National Olympiad bronze, Dean\'s list, regional poetry prize' },
+            { name: 'sports', label: 'Sports / athletics', type: 'text', full: true },
+            { name: 'volunteerHours', label: 'Volunteer hours (lifetime, approx.)', type: 'number', min: 0 },
+            { name: 'volunteerCauses', label: 'Causes you serve', type: 'chips-multi', full: true,
+              options: ['Education', 'Hunger / nutrition', 'Homelessness', 'Environment', 'Climate', 'Animal welfare', 'Mental health', 'Public health', 'Civil rights', 'Refugee / migrant support', 'Disability advocacy', 'Religious service', 'Veterans', 'Women & girls', 'Indigenous rights'] },
+            { name: 'research', label: 'Research / publications', type: 'textarea', full: true,
+              placeholder: 'Lab, advisor, papers, conference posters' },
+          ]
+        },
+        {
+          title: 'Career & interests',
+          subtitle: 'What\'s next, and what drives you?',
+          fields: [
+            { name: 'careerGoal', label: 'Career goal', type: 'textarea', full: true,
+              placeholder: 'e.g. Pediatric oncologist focused on global access to care' },
+            { name: 'industryInterest', label: 'Industry interest', type: 'chips-multi', full: true,
+              options: ['Healthcare / Medicine', 'Technology / Software', 'Engineering', 'Finance / FinTech', 'Education', 'Government / Policy', 'Law', 'Arts / Media', 'Business / Entrepreneurship', 'Nonprofit / Social impact', 'Sciences / Research', 'Sustainability / Climate', 'Agriculture / AgTech', 'Architecture / Urbanism', 'International development'] },
+            { name: 'workExperience', label: 'Work / internship experience', type: 'textarea', full: true,
+              placeholder: 'Title — employer — dates' },
+            { name: 'specialInterests', label: 'Special interests / passions', type: 'textarea', full: true,
+              placeholder: 'e.g. Climate justice, women in STEM, accessible design' },
+            { name: 'planAfterGrad', label: 'Plan after graduation', type: 'select', full: true,
+              options: ['Continue studies', 'Industry job', 'Start a business', 'Public service / military', 'National service / gap year', 'Return to home country', 'Undecided'] },
+          ]
+        },
+        {
+          title: 'Mobility & study abroad',
+          subtitle: 'Many global awards reward cross-border study.',
+          fields: [
+            { name: 'studyAbroad', label: 'Open to studying outside your home country?', type: 'select',
+              options: ['Yes — anywhere', 'Yes — specific regions', 'No', 'Already abroad'] },
+            { name: 'preferredRegions', label: 'Preferred study regions', type: 'chips-multi', full: true,
+              options: ['North America', 'Latin America', 'UK / Ireland', 'EU / Schengen', 'Nordics', 'Eastern Europe', 'MENA', 'Sub-Saharan Africa', 'South Asia', 'East Asia', 'Southeast Asia', 'Oceania'] },
+            { name: 'visaSupportNeeded', label: 'Need visa support?', type: 'select',
+              options: ['Yes', 'No', 'Already have visa', 'Unsure'] },
+            { name: 'languageProficiency', label: 'English / academic language proficiency', type: 'select',
+              options: ['Native speaker', 'Tested (IELTS / TOEFL / Duolingo)', 'Fluent — untested', 'Intermediate', 'Need language support'] },
+          ]
+        },
+        {
+          title: 'Funding preferences',
+          subtitle: 'Tell FundHuntr what to apply for and what to skip.',
+          fields: [
+            { name: 'fundingTypes', label: 'Funding types of interest', type: 'chips-multi', full: true,
+              options: ['Scholarships', 'Bursaries', 'Fellowships', 'Grants', 'Forgivable loans', 'Tuition reimbursement', 'Stipends', 'Travel grants', 'Research grants', 'Emergency / hardship aid'] },
+            { name: 'minAmount', label: 'Minimum amount worth applying for', type: 'number', placeholder: '500', hint: 'In your selected currency.' },
+            { name: 'autoApply', label: 'Enable auto-apply?', type: 'chips', full: true,
+              options: ['Yes — apply automatically when match >85%', 'Yes — but ask me to review first', 'Draft only — I\'ll submit', 'No — just show me matches'] },
+            { name: 'willingToWriteEssay', label: 'Essay length you\'ll review', type: 'select',
+              options: ['Any length', 'Short essays only (<500 words)', 'Auto-drafted only', 'Prefer no essays'] },
+            { name: 'willingToInterview', label: 'Willing to interview?', type: 'select',
+              options: ['Yes — any format', 'Video only', 'No'] },
+            { name: 'deadlineHorizon', label: 'How far ahead can you apply?', type: 'select',
+              options: ['This month', 'Next 3 months', 'Next 6 months', 'Anytime in next year'] },
+          ]
+        }
+      ]
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      FH.initWizard({ type: 'student', schema: studentSchema });
+      FH.renderBottomNav('profile');
+    });
+  </script>
+</body>
+</html>

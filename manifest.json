@@ -1,0 +1,47 @@
+{
+  "name": "FundHuntr — Match with funding worldwide",
+  "short_name": "FundHuntr",
+  "description": "Tinder-style scholarship and grant matching for students, businesses, charities, and non-profits — globally.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#15a36b",
+  "lang": "en",
+  "categories": ["finance", "education", "productivity"],
+  "icons": [
+    {
+      "src": "icon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-192.svg",
+      "type": "image/svg+xml",
+      "sizes": "192x192",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Discover funding",
+      "short_name": "Discover",
+      "url": "./discover.html",
+      "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    },
+    {
+      "name": "Saved matches",
+      "short_name": "Saved",
+      "url": "./saved.html",
+      "icons": [{ "src": "icon.svg", "sizes": "any", "type": "image/svg+xml" }]
+    }
+  ]
+}
