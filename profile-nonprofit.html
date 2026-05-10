@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#15a36b" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="FundHuntr" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="apple-touch-icon" href="icon-192.svg" />
+  <title>Non-profit profile · FundHuntr</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav class="nav">
+    <a href="index.html" style="display:flex; align-items:center; gap:10px; color:inherit; text-decoration:none;" class="brand">
+      <div class="brand-mark" data-icon="brand"></div>
+      <span>FundHuntr</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link hide-mobile" href="index.html">Switch type</a>
+      <a class="nav-link" href="discover.html">Skip →</a>
+    </div>
+  </nav>
+
+  <main class="container-narrow">
+    <div class="wizard-shell">
+      <div class="wizard-header">
+        <div class="wizard-title">
+          <div class="profile-icon" data-icon="columns" style="background: linear-gradient(135deg, #15a36b, #e23a3a);"></div>
+          <div>
+            <h2>Non-profit / NGO profile</h2>
+            <p>The richer your answers, the better our AI applies for you.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="progress-track"><div class="progress-fill" data-progress-fill></div></div>
+      <div class="progress-meta">
+        <span data-step-label>Step 1</span>
+        <span data-progress-label>Step 1 of 7</span>
+      </div>
+
+      <div class="wizard-body" data-wizard-body></div>
+
+      <div class="wizard-footer">
+        <button class="btn btn-ghost" data-back>← Back</button>
+        <button class="btn btn-primary" data-next>Next →</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+  <script src="icons.js"></script>
+  <script>
+    const COUNTRIES = [
+      'Argentina', 'Australia', 'Austria', 'Bangladesh', 'Belgium', 'Brazil', 'Cameroon',
+      'Canada', 'Chile', 'China', 'Colombia', 'Czech Republic', 'Denmark', 'Egypt',
+      'Ethiopia', 'Finland', 'France', 'Germany', 'Ghana', 'Greece', 'Hungary', 'India',
+      'Indonesia', 'Iran', 'Ireland', 'Israel', 'Italy', 'Japan', 'Jordan', 'Kenya',
+      'Lebanon', 'Malaysia', 'Mexico', 'Morocco', 'Netherlands', 'New Zealand', 'Nigeria',
+      'Norway', 'Pakistan', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar',
+      'Romania', 'Saudi Arabia', 'Singapore', 'South Africa', 'South Korea', 'Spain',
+      'Sweden', 'Switzerland', 'Tanzania', 'Thailand', 'Tunisia', 'Turkey', 'UAE',
+      'Uganda', 'United Kingdom', 'United States', 'Vietnam', 'Other'
+    ];
+
+    const nonprofitSchema = {
+      steps: [
+        {
+          title: 'Organization identity',
+          subtitle: 'Funders verify these first.',
+          fields: [
+            { name: 'orgName', label: 'Legal organization name', type: 'text', required: true, full: true },
+            { name: 'dba', label: 'DBA / brand name', type: 'text' },
+            { name: 'website', label: 'Website', type: 'url' },
+            { name: 'taxStatus', label: 'Tax-exempt status', type: 'chips', full: true,
+              options: ['501(c)(3) public charity (US)', '501(c)(3) private foundation (US)', '501(c)(4)/(6)/(19) (US)', 'Registered NGO', 'Section 8 / Trust (India)', 'Verein / e.V. (DE)', 'Stiftung / Foundation', 'Association loi 1901 (FR)', 'CIO / Charity (UK)', 'Public Benefit Org (NL/SA/etc.)', 'Fiscal sponsorship', 'Application pending', 'International equivalent'] },
+            { name: 'taxId', label: 'Tax ID / EIN / equivalent', type: 'text', placeholder: 'EIN / 12A / KvK / etc.' },
+            { name: 'registry', label: 'Public registry profile (if any)', type: 'url', placeholder: 'GuideStar, Charity Commission, ACNC…' },
+            { name: 'foundedDate', label: 'Founded date', type: 'date' },
+            { name: 'incorporationCountry', label: 'Country of incorporation', type: 'select', required: true, options: COUNTRIES },
+            { name: 'fiscalSponsor', label: 'Fiscal sponsor (if any)', type: 'text' },
+          ]
+        },
+        {
+          title: 'Mission & cause focus',
+          subtitle: 'Core to grant matching.',
+          fields: [
+            { name: 'mission', label: 'Mission statement', type: 'textarea', full: true, rows: 3 },
+            { name: 'visionStatement', label: 'Vision statement', type: 'textarea', full: true, rows: 2 },
+            { name: 'theoryOfChange', label: 'Theory of change (brief)', type: 'textarea', full: true, rows: 3 },
+            { name: 'causeAreas', label: 'Cause areas', type: 'chips-multi', full: true,
+              options: ['Education / K-12', 'Higher ed', 'Workforce / economic mobility', 'Health', 'Mental / behavioral health', 'Public health', 'Hunger / food security', 'Water & sanitation', 'Housing / homelessness', 'Children & youth', 'Aging', 'Disability', 'Immigration / refugees', 'Animal welfare', 'Environment', 'Climate', 'Conservation', 'Arts & culture', 'Civil rights', 'Voting / democracy', 'Veterans', 'Recovery', 'LGBTQ+', 'Women & girls', 'Racial / ethnic equity', 'Indigenous rights', 'Faith-based', 'International dev'] },
+            { name: 'sdgAlignment', label: 'UN SDGs aligned with', type: 'chips-multi', full: true,
+              options: ['1 No poverty', '2 Zero hunger', '3 Good health', '4 Education', '5 Gender equality', '6 Water', '7 Energy', '8 Decent work', '9 Industry', '10 Reduced inequalities', '11 Cities', '13 Climate', '14 Life under water', '15 Life on land', '16 Peace & justice', '17 Partnerships'] },
+          ]
+        },
+        {
+          title: 'Beneficiaries & geography',
+          subtitle: 'Funders match by who and where.',
+          fields: [
+            { name: 'beneficiaries', label: 'Primary populations served', type: 'chips-multi', full: true,
+              options: ['Children (0-12)', 'Youth (13-18)', 'Young adults (18-25)', 'Adults', 'Seniors (65+)', 'Families', 'Women & girls', 'LGBTQ+', 'Underrepresented communities', 'Immigrants / refugees', 'People with disabilities', 'Veterans', 'Unhoused', 'Justice-impacted', 'Smallholder farmers', 'Animals', 'General public', 'Other organizations'] },
+            { name: 'beneficiariesPerYear', label: 'People served per year', type: 'number', placeholder: '5000' },
+            { name: 'serviceArea', label: 'Service geography', type: 'select', full: true,
+              options: ['Single neighborhood', 'City', 'County / region', 'State / province', 'Multi-state', 'National', 'Multi-country', 'Continental', 'Global'] },
+            { name: 'cities', label: 'Primary places served', type: 'text', full: true },
+            { name: 'languages', label: 'Languages you serve in', type: 'text', full: true },
+          ]
+        },
+        {
+          title: 'Programs & impact',
+          subtitle: 'What you do, how you measure it.',
+          fields: [
+            { name: 'numPrograms', label: 'Active programs', type: 'number' },
+            { name: 'flagshipProgram', label: 'Flagship program', type: 'textarea', full: true, rows: 3 },
+            { name: 'serviceModel', label: 'Service model(s)', type: 'chips-multi', full: true,
+              options: ['Direct services', 'Advocacy / policy', 'Research', 'Capacity building', 'Convening', 'Education / training', 'Cash / material aid', 'Online platform', 'Volunteer mobilization', 'Litigation'] },
+            { name: 'outputMetrics', label: 'Output metrics', type: 'textarea', full: true, rows: 3 },
+            { name: 'outcomeMetrics', label: 'Outcome metrics', type: 'textarea', full: true, rows: 3 },
+            { name: 'evaluationApproach', label: 'Evaluation approach', type: 'select',
+              options: ['Internal tracking', 'External evaluator', 'Logic model / theory of change', 'RCT / quasi-experimental', 'Developmental / formative'] },
+            { name: 'evidenceLevel', label: 'Evidence level', type: 'select',
+              options: ['Promising', 'Supported', 'Well-supported (RCT)', 'Emerging'] },
+          ]
+        },
+        {
+          title: 'Governance & team',
+          subtitle: 'Boards and leadership matter for due diligence.',
+          fields: [
+            { name: 'boardSize', label: 'Board / trustee count', type: 'number' },
+            { name: 'boardDiversity', label: 'Board diversity', type: 'select', full: true,
+              options: ['Majority represents communities served', 'Half represents communities', 'Minority represents communities', 'Working on it', 'Prefer not to say'] },
+            { name: 'fteCount', label: 'Full-time equivalents', type: 'number' },
+            { name: 'volunteerCount', label: 'Active volunteers', type: 'number' },
+            { name: 'edName', label: 'Executive Director / CEO name', type: 'text' },
+            { name: 'edEmail', label: 'ED / contact email', type: 'email', required: true },
+            { name: 'edTenure', label: 'ED tenure (years)', type: 'number' },
+          ]
+        },
+        {
+          title: 'Financial profile',
+          subtitle: 'Many funders gate by these.',
+          fields: [
+            { name: 'currency', label: 'Reporting currency', type: 'select',
+              options: ['USD ($)', 'EUR (€)', 'GBP (£)', 'INR (₹)', 'NGN (₦)', 'ZAR (R)', 'KES (KSh)', 'AUD (A$)', 'CAD (C$)', 'BRL (R$)', 'JPY (¥)', 'CNY (¥)', 'MXN ($)', 'PHP (₱)', 'IDR (Rp)', 'EGP (E£)', 'AED (د.إ)', 'CHF', 'SEK', 'NOK', 'Other'] },
+            { name: 'annualBudget', label: 'Annual operating budget', type: 'select',
+              options: ['Under $100k', '$100k–$500k', '$500k–$1M', '$1M–$5M', '$5M–$25M', '$25M–$100M', '$100M+'] },
+            { name: 'lastYearRevenue', label: 'Last year total revenue', type: 'number' },
+            { name: 'incomeMix', label: 'Primary revenue sources', type: 'chips-multi', full: true,
+              options: ['Individual donors', 'Major gifts', 'Foundation grants', 'Government grants', 'Multilateral / development bank', 'Corporate giving', 'Earned revenue', 'Events', 'Membership', 'In-kind', 'Endowment income', 'Diaspora donations'] },
+            { name: 'majorFunders', label: 'Top 3 funders (last 12 mo)', type: 'textarea', full: true,
+              placeholder: 'Funder name — amount — purpose' },
+            { name: 'reservesMonths', label: 'Months of cash reserves', type: 'number' },
+            { name: 'auditStatus', label: 'Audit status', type: 'select',
+              options: ['Annual audit (3+ yrs)', 'Annual audit (under 3 yrs)', 'Independent review', 'Compilation only', 'None — too small'] },
+            { name: 'annualReport', label: 'Annual return / 990 / equivalent', type: 'select',
+              options: ['Filed', 'Filing soon', 'Not yet required', 'International — N/A'] },
+            { name: 'overheadRatio', label: 'Overhead / admin ratio (%)', type: 'number', placeholder: '15' },
+          ]
+        },
+        {
+          title: 'Funding ask',
+          subtitle: 'Help our AI surface and apply for the right opportunities.',
+          fields: [
+            { name: 'fundingNeeded', label: 'Funding need this year', type: 'number', placeholder: '500000', hint: 'In your selected currency.' },
+            { name: 'fundingPurpose', label: 'Use of funds', type: 'chips-multi', full: true,
+              options: ['Program expansion', 'New program', 'General operating', 'Capital / building', 'Equipment / tech', 'Staff hires', 'Capacity building', 'Research / evaluation', 'Advocacy', 'Endowment', 'Emergency / disaster'] },
+            { name: 'minGrantSize', label: 'Minimum grant size worth pursuing', type: 'number', placeholder: '10000' },
+            { name: 'maxGrantSize', label: 'Maximum grant size to pursue', type: 'number', placeholder: '500000' },
+            { name: 'grantTypes', label: 'Open to which grant types?', type: 'chips-multi', full: true,
+              options: ['General operating', 'Project / restricted', 'Capacity building', 'Capital', 'Multi-year', 'Matching', 'Government', 'Multilateral / development bank', 'Corporate', 'Family foundation', 'Community foundation'] },
+            { name: 'autoApply', label: 'Let our AI auto-apply?', type: 'chips', full: true,
+              options: ['Yes — apply automatically when match >85%', 'Yes — but ask me to review first', 'Draft only — I\'ll submit', 'No — just show me matches'] },
+            { name: 'urgency', label: 'How urgent?', type: 'select',
+              options: ['Within 30 days', 'Next 3 months', 'Next 6 months', 'Within 12 months'] },
+            { name: 'capacityForApps', label: 'Grant-writing capacity in-house', type: 'select',
+              options: ['Dedicated grants staff', 'ED writes proposals', 'Outsourced consultant', 'Volunteer support', 'Limited capacity'] },
+          ]
+        }
+      ]
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      FH.initWizard({ type: 'nonprofit', schema: nonprofitSchema });
+      FH.renderBottomNav('profile');
+    });
+  </script>
+</body>
+</html>

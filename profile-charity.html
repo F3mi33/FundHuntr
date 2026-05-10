@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#15a36b" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="FundHuntr" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="apple-touch-icon" href="icon-192.svg" />
+  <title>Charity profile · FundHuntr</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav class="nav">
+    <a href="index.html" style="display:flex; align-items:center; gap:10px; color:inherit; text-decoration:none;" class="brand">
+      <div class="brand-mark" data-icon="brand"></div>
+      <span>FundHuntr</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link hide-mobile" href="index.html">Switch type</a>
+      <a class="nav-link" href="discover.html">Skip →</a>
+    </div>
+  </nav>
+
+  <main class="container-narrow">
+    <div class="wizard-shell">
+      <div class="wizard-header">
+        <div class="wizard-title">
+          <div class="profile-icon" data-icon="heart" style="background: linear-gradient(135deg, #e23a3a, #b62828);"></div>
+          <div>
+            <h2>Charity profile</h2>
+            <p>The richer your answers, the better our AI applies for you.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="progress-track"><div class="progress-fill" data-progress-fill></div></div>
+      <div class="progress-meta">
+        <span data-step-label>Step 1</span>
+        <span data-progress-label>Step 1 of 7</span>
+      </div>
+
+      <div class="wizard-body" data-wizard-body></div>
+
+      <div class="wizard-footer">
+        <button class="btn btn-ghost" data-back>← Back</button>
+        <button class="btn btn-primary" data-next>Next →</button>
+      </div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+  <script src="icons.js"></script>
+  <script>
+    const COUNTRIES = [
+      'Argentina', 'Australia', 'Austria', 'Bangladesh', 'Belgium', 'Brazil', 'Cameroon',
+      'Canada', 'Chile', 'China', 'Colombia', 'Czech Republic', 'Denmark', 'Egypt',
+      'Ethiopia', 'Finland', 'France', 'Germany', 'Ghana', 'Greece', 'Hungary', 'India',
+      'Indonesia', 'Iran', 'Ireland', 'Israel', 'Italy', 'Japan', 'Jordan', 'Kenya',
+      'Lebanon', 'Malaysia', 'Mexico', 'Morocco', 'Netherlands', 'New Zealand', 'Nigeria',
+      'Norway', 'Pakistan', 'Peru', 'Philippines', 'Poland', 'Portugal', 'Qatar',
+      'Romania', 'Saudi Arabia', 'Singapore', 'South Africa', 'South Korea', 'Spain',
+      'Sweden', 'Switzerland', 'Tanzania', 'Thailand', 'Tunisia', 'Turkey', 'UAE',
+      'Uganda', 'United Kingdom', 'United States', 'Vietnam', 'Other'
+    ];
+
+    const charitySchema = {
+      steps: [
+        {
+          title: 'Organization basics',
+          subtitle: 'Who you are.',
+          fields: [
+            { name: 'orgName', label: 'Organization name', type: 'text', required: true, full: true },
+            { name: 'website', label: 'Website', type: 'url' },
+            { name: 'foundedDate', label: 'Founded date', type: 'date' },
+            { name: 'registrationStatus', label: 'Registration status', type: 'select', full: true,
+              options: ['Registered charity (UK Charity Commission / OSCR / CCNI)', 'Registered charity (Canada CRA / Australia ACNC / NZ)', 'Public Benefit Org (e.g. South Africa, Germany e.V.)', 'Community Interest Company / Social enterprise', 'Trust / Stiftung / Fondation', 'Society / Verein', 'Unincorporated association', 'Fiscally sponsored', 'Application pending', 'Other'] },
+            { name: 'registrationNumber', label: 'Registration / charity number', type: 'text', placeholder: 'e.g. UK 1234567 / ACNC 12 345 678 901' },
+            { name: 'registrationCountry', label: 'Country of registration', type: 'select', required: true, options: COUNTRIES },
+            { name: 'oneLiner', label: 'One-line description', type: 'text', full: true,
+              placeholder: 'Free after-school STEM clubs in under-resourced boroughs.' },
+          ]
+        },
+        {
+          title: 'Mission & cause',
+          subtitle: 'Funders care most about mission fit.',
+          fields: [
+            { name: 'mission', label: 'Mission statement', type: 'textarea', full: true, rows: 3 },
+            { name: 'causeAreas', label: 'Cause areas', type: 'chips-multi', full: true,
+              options: ['Education', 'Health', 'Mental health', 'Hunger / food security', 'Water & sanitation', 'Housing / homelessness', 'Domestic violence', 'Children & youth', 'Elderly care', 'Disability services', 'Immigrants / refugees', 'Animal welfare', 'Environment', 'Climate', 'Arts & culture', 'Religion / faith', 'Civil rights', 'Veterans', 'Recovery / addiction', 'LGBTQ+', 'Women & girls', 'Racial / ethnic equity', 'Indigenous rights', 'Disaster relief'] },
+            { name: 'beneficiaries', label: 'Primary beneficiaries', type: 'chips-multi', full: true,
+              options: ['Children (0-12)', 'Youth (13-18)', 'Young adults (18-25)', 'Adults', 'Seniors (65+)', 'Families', 'Women & girls', 'Men & boys', 'LGBTQ+ individuals', 'Underrepresented communities', 'Immigrants / refugees', 'People with disabilities', 'Veterans', 'Unhoused individuals', 'Justice-impacted', 'Animals', 'Smallholder farmers', 'General public'] },
+            { name: 'beneficiariesPerYear', label: 'People served per year', type: 'number', placeholder: '1200' },
+            { name: 'visionStatement', label: 'Vision statement', type: 'textarea', full: true, rows: 2 },
+          ]
+        },
+        {
+          title: 'Geography & programs',
+          subtitle: 'Where and how you operate.',
+          fields: [
+            { name: 'serviceArea', label: 'Geographic service area', type: 'select', full: true,
+              options: ['Single neighborhood', 'City', 'Region / county', 'State / province', 'National', 'Multi-country', 'Continental', 'Global'] },
+            { name: 'cities', label: 'Primary places served', type: 'text', full: true,
+              placeholder: 'e.g. Lagos (Mainland LGA), Abuja (Bwari)' },
+            { name: 'numPrograms', label: 'Number of active programs', type: 'number' },
+            { name: 'flagshipProgram', label: 'Flagship program', type: 'textarea', full: true,
+              rows: 3, placeholder: 'Name + a 2-3 sentence description' },
+            { name: 'serviceModel', label: 'Service delivery model', type: 'chips-multi', full: true,
+              options: ['Direct services', 'Advocacy', 'Research', 'Capacity building', 'Convening', 'Education / training', 'Cash / material aid', 'Online platform', 'Volunteer-driven'] },
+            { name: 'languagesServed', label: 'Languages you serve in', type: 'text', full: true },
+          ]
+        },
+        {
+          title: 'Team & governance',
+          subtitle: 'Who runs the organization.',
+          fields: [
+            { name: 'paidStaff', label: 'Paid staff (FTE)', type: 'number' },
+            { name: 'volunteers', label: 'Active volunteers', type: 'number' },
+            { name: 'trustees', label: 'Trustees / board members', type: 'number' },
+            { name: 'leaderName', label: 'Executive leader name', type: 'text' },
+            { name: 'leaderTitle', label: 'Leader title', type: 'text', placeholder: 'CEO / Director' },
+            { name: 'leaderEmail', label: 'Contact email', type: 'email', required: true },
+            { name: 'leadershipDiversity', label: 'Leadership represents the communities served?', type: 'select', full: true,
+              options: ['Yes — fully', 'Partially', 'Working on it', 'Prefer not to say'] },
+          ]
+        },
+        {
+          title: 'Financial picture',
+          subtitle: 'Funders read your numbers carefully.',
+          fields: [
+            { name: 'currency', label: 'Reporting currency', type: 'select',
+              options: ['USD ($)', 'EUR (€)', 'GBP (£)', 'INR (₹)', 'NGN (₦)', 'ZAR (R)', 'KES (KSh)', 'AUD (A$)', 'CAD (C$)', 'BRL (R$)', 'JPY (¥)', 'CNY (¥)', 'MXN ($)', 'PHP (₱)', 'IDR (Rp)', 'EGP (E£)', 'AED (د.إ)', 'CHF', 'SEK', 'NOK', 'Other'] },
+            { name: 'annualBudget', label: 'Annual budget', type: 'select',
+              options: ['Under $50k', '$50k–$250k', '$250k–$1M', '$1M–$5M', '$5M–$25M', '$25M+'] },
+            { name: 'incomeMix', label: 'Primary income sources', type: 'chips-multi', full: true,
+              options: ['Individual donors', 'Major gifts', 'Foundation grants', 'Government grants', 'Corporate giving', 'Earned revenue', 'Events', 'In-kind', 'Membership dues', 'Diaspora donations', 'International aid'] },
+            { name: 'reservesMonths', label: 'Months of reserves', type: 'number' },
+            { name: 'auditedFinancials', label: 'Audited / examined financials available?', type: 'select',
+              options: ['Yes — last 3+ years', 'Yes — last year', 'Independent examination', 'Internal only', 'Not yet'] },
+            { name: 'previousGrants', label: 'Sample of prior grants received', type: 'textarea', full: true,
+              placeholder: 'Funder, amount, year' },
+          ]
+        },
+        {
+          title: 'Impact & outcomes',
+          subtitle: 'What you measure.',
+          fields: [
+            { name: 'outputMetrics', label: 'Output metrics', type: 'textarea', full: true,
+              rows: 3, placeholder: 'e.g. 5,200 meals served, 300 youth enrolled' },
+            { name: 'outcomeMetrics', label: 'Outcome metrics', type: 'textarea', full: true,
+              rows: 3, placeholder: 'e.g. 78% improved literacy, 40% reduced food insecurity' },
+            { name: 'evaluationApproach', label: 'Evaluation approach', type: 'select',
+              options: ['Internal tracking', 'External evaluator', 'Logic model / theory of change', 'RCT / quasi-experimental', 'None yet'] },
+            { name: 'sdgAlignment', label: 'UN SDGs aligned with', type: 'chips-multi', full: true,
+              options: ['1 No poverty', '2 Zero hunger', '3 Good health', '4 Education', '5 Gender equality', '6 Water', '7 Energy', '8 Decent work', '9 Industry', '10 Reduced inequalities', '11 Cities', '13 Climate', '14 Life under water', '15 Life on land', '16 Peace & justice', '17 Partnerships'] },
+            { name: 'caseStudies', label: 'Story / case study (short)', type: 'textarea', full: true, rows: 3 },
+          ]
+        },
+        {
+          title: 'Funding need',
+          subtitle: 'What you\'re hoping our AI applies for.',
+          fields: [
+            { name: 'fundingNeeded', label: 'Total funding need', type: 'number', placeholder: '150000', hint: 'In your selected currency.' },
+            { name: 'fundingPurpose', label: 'Funding purpose', type: 'chips-multi', full: true,
+              options: ['Program expansion', 'New program launch', 'Capacity building', 'Operations / overhead', 'Capital / equipment', 'Staff hires', 'Tech / digital', 'Research', 'Advocacy', 'Endowment', 'Emergency / disaster relief'] },
+            { name: 'restrictedOk', label: 'Restricted funding OK?', type: 'select',
+              options: ['Yes', 'Prefer unrestricted', 'Mix is fine'] },
+            { name: 'autoApply', label: 'Let our AI auto-apply?', type: 'chips', full: true,
+              options: ['Yes — apply automatically when match >85%', 'Yes — but ask me to review first', 'Draft only — I\'ll submit', 'No — just show me matches'] },
+            { name: 'reportingCapacity', label: 'Reporting capacity', type: 'select',
+              options: ['Quarterly reporting OK', 'Annual reporting only', 'Light reporting preferred'] },
+            { name: 'partnerships', label: 'Strategic partners', type: 'textarea', full: true,
+              placeholder: 'Partner orgs, schools, government depts, networks.' },
+          ]
+        }
+      ]
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+      FH.initWizard({ type: 'charity', schema: charitySchema });
+      FH.renderBottomNav('profile');
+    });
+  </script>
+</body>
+</html>

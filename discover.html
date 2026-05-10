@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#15a36b" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="FundHuntr" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="apple-touch-icon" href="icon-192.svg" />
+  <title>Discover · FundHuntr</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav class="nav">
+    <a href="index.html" style="display:flex; align-items:center; gap:10px; color:inherit; text-decoration:none;" class="brand">
+      <div class="brand-mark" data-icon="brand"></div>
+      <span>FundHuntr</span>
+    </a>
+    <div class="nav-links">
+      <a class="nav-link hide-mobile" href="saved.html">Saved</a>
+      <a class="nav-link" href="#" data-edit-profile>Edit profile</a>
+    </div>
+  </nav>
+
+  <main class="discover-shell">
+    <h2 id="greeting">Your matches</h2>
+    <p class="sub" id="profile-line">Build a profile to personalize this feed.</p>
+
+    <div class="deck" id="deck"></div>
+
+    <div class="swipe-actions">
+      <div class="swipe-action info" data-icon="info" id="btn-info" title="View details"></div>
+      <div class="swipe-action nope" data-icon="close" id="btn-nope" title="Pass"></div>
+      <div class="swipe-action like" data-icon="heart-fill" id="btn-like" title="Save & queue for AI"></div>
+      <div class="swipe-action star" data-icon="star" id="btn-star" title="Apply now (priority)"></div>
+    </div>
+
+    <div class="matches-bar">
+      <span class="matches-count" id="saved-count">0</span>
+      <div>
+        <strong>Queued for AI auto-apply</strong>
+        <small style="display:block;">Swipe right or tap the heart — our agent drafts and submits.</small>
+      </div>
+    </div>
+  </main>
+
+  <script src="app.js"></script>
+  <script src="icons.js"></script>
+  <script>
+    /* ---- Sample global opportunities (the matching agent generates these in production) ---- */
+    const OPPORTUNITIES = [
+      // Student — global
+      { id: 's1', audience: ['student'], country: 'Global', title: 'Chevening Scholarships', org: 'UK Government — FCDO',
+        amount: 'Full tuition + stipend', deadline: 'Nov 2026', type: 'Scholarship', match: 94,
+        icon: 'graduation-cap', banner: 'bg-green',
+        tags: ['UK study', 'Master\'s', 'Worldwide'],
+        desc: 'UK government\'s flagship international scholarship for future leaders to pursue any one-year Master\'s in the UK.' },
+      { id: 's2', audience: ['student'], country: 'EU', title: 'Erasmus Mundus Joint Master\'s', org: 'European Commission',
+        amount: '€49k–€57k full package', deadline: 'Jan 2027', type: 'Scholarship', match: 92,
+        icon: 'globe', banner: 'bg-fresh',
+        tags: ['EU multi-country', 'Master\'s'],
+        desc: 'Fully-funded joint Master\'s at 2-3 EU universities, open to students worldwide. Covers tuition, travel, monthly stipend.' },
+      { id: 's3', audience: ['student'], country: 'Africa-focused', title: 'Mastercard Foundation Scholars Program', org: 'Mastercard Foundation',
+        amount: 'Comprehensive (full)', deadline: 'Rolling per partner', type: 'Scholarship', match: 90,
+        icon: 'graduation-cap', banner: 'bg-mix',
+        tags: ['Africa-focused', 'Undergrad + Master\'s'],
+        desc: 'Comprehensive scholarships for academically talented yet economically disadvantaged young people, particularly from Africa.' },
+      { id: 's4', audience: ['student'], country: 'Germany', title: 'DAAD Scholarships', org: 'German Academic Exchange',
+        amount: '€934/mo + tuition', deadline: 'Varies', type: 'Scholarship', match: 88,
+        icon: 'graduation-cap', banner: 'bg-deep',
+        tags: ['Germany', 'All levels'],
+        desc: 'Germany\'s DAAD funds international students at every level — undergrad, Master\'s, PhD, research stays.' },
+      { id: 's5', audience: ['student'], country: 'Australia', title: 'Australia Awards Scholarships', org: 'Australian Government',
+        amount: 'Full tuition + living', deadline: 'Apr 2027', type: 'Scholarship', match: 86,
+        icon: 'graduation-cap', banner: 'bg-fresh',
+        tags: ['Australia', 'Developing countries'],
+        desc: 'Long-term development scholarships for citizens of partner developing countries to study at Australian universities.' },
+      { id: 's6', audience: ['student'], country: 'India', title: 'Inspire Scholarship for Higher Education', org: 'Govt. of India — DST',
+        amount: '₹80,000/year', deadline: 'Aug 2026', type: 'Scholarship', match: 84,
+        icon: 'atom', banner: 'bg-green',
+        tags: ['India', 'Top 1% / STEM'],
+        desc: 'For top-performing Indian students in natural & basic sciences pursuing undergrad or Master\'s in India.' },
+      { id: 's7', audience: ['student'], country: 'United States', title: 'Gates Scholarship', org: 'Gates Foundation',
+        amount: 'Full cost of attendance', deadline: 'Sep 2026', type: 'Scholarship', match: 89,
+        icon: 'graduation-cap', banner: 'bg-mix',
+        tags: ['US', 'Underrepresented'],
+        desc: 'Highly selective last-dollar scholarship for outstanding minority high school seniors from low-income households.' },
+      { id: 's8', audience: ['student'], country: 'Nigeria', title: 'PTDF Overseas Scholarship', org: 'Nigeria PTDF',
+        amount: 'Full Master\'s/PhD', deadline: 'Mar 2027', type: 'Scholarship', match: 81,
+        icon: 'bolt', banner: 'bg-deep',
+        tags: ['Nigeria', 'Energy / STEM'],
+        desc: 'Full sponsorship for Nigerian citizens pursuing Master\'s or PhD in oil, gas, energy, and STEM fields abroad.' },
+
+      // Business — global
+      { id: 'b1', audience: ['business'], country: 'EU', title: 'Horizon Europe — EIC Accelerator', org: 'European Innovation Council',
+        amount: 'Up to €17.5M', deadline: 'Quarterly cut-offs', type: 'Grant + equity', match: 92,
+        icon: 'rocket', banner: 'bg-fresh',
+        tags: ['EU', 'Deep tech', 'SME'],
+        desc: 'Game-changing innovations from SMEs anywhere in EU & associated countries — non-dilutive grant plus optional equity.' },
+      { id: 'b2', audience: ['business'], country: 'United Kingdom', title: 'Innovate UK Smart Grants', org: 'Innovate UK / UKRI',
+        amount: '£25k–£500k', deadline: 'Rolling', type: 'Grant', match: 90,
+        icon: 'lightbulb', banner: 'bg-green',
+        tags: ['UK', 'R&D'],
+        desc: 'Funds disruptive, market-leading R&D from the UK\'s most innovative businesses across all sectors.' },
+      { id: 'b3', audience: ['business'], country: 'United States', title: 'SBIR Phase I', org: 'NIH / NSF / DoD / NASA',
+        amount: 'Up to $295,000', deadline: 'Rolling', type: 'Federal grant', match: 88,
+        icon: 'atom', banner: 'bg-deep',
+        tags: ['US', 'Non-dilutive', 'R&D'],
+        desc: 'Non-dilutive funding for small businesses doing technical R&D with commercialization potential.' },
+      { id: 'b4', audience: ['business'], country: 'Africa', title: 'Tony Elumelu Foundation Entrepreneurship', org: 'Tony Elumelu Foundation',
+        amount: '$5,000 + training', deadline: 'Jan 2027', type: 'Grant + program', match: 86,
+        icon: 'globe', banner: 'bg-mix',
+        tags: ['Africa', '54 countries'],
+        desc: '$100M commitment empowering 10,000 African entrepreneurs across all 54 countries with seed capital, training, and mentorship.' },
+      { id: 'b5', audience: ['business'], country: 'India', title: 'Startup India Seed Fund Scheme', org: 'Govt. of India — DPIIT',
+        amount: 'Up to ₹50 lakh', deadline: 'Rolling', type: 'Grant + debt', match: 85,
+        icon: 'rocket', banner: 'bg-green',
+        tags: ['India', 'DPIIT-recognized'],
+        desc: 'Financial assistance for proof of concept, prototype development, product trials, and commercialization for early-stage Indian startups.' },
+      { id: 'b6', audience: ['business'], country: 'Canada', title: 'IRAP — Industrial Research Assistance', org: 'NRC IRAP',
+        amount: 'Up to CA$10M', deadline: 'Rolling', type: 'Grant', match: 83,
+        icon: 'lightbulb', banner: 'bg-fresh',
+        tags: ['Canada', 'R&D', 'SME'],
+        desc: 'Advisory services and funding for Canadian SMEs developing innovative products, services, or processes.' },
+      { id: 'b7', audience: ['business'], country: 'Global', title: 'Earthshot Prize', org: 'The Royal Foundation',
+        amount: '£1M per winner', deadline: 'Jul 2026', type: 'Prize', match: 80,
+        icon: 'leaf', banner: 'bg-green',
+        tags: ['Global', 'Climate', 'Prize'],
+        desc: 'Five £1M prizes annually for solutions repairing the planet — protect & restore nature, clean air, revive oceans, build waste-free, fix climate.' },
+      { id: 'b8', audience: ['business'], country: 'Global', title: 'Hello Alice Small Business Grant', org: 'Hello Alice & partners',
+        amount: '$10,000', deadline: 'Quarterly', type: 'Grant', match: 78,
+        icon: 'briefcase', banner: 'bg-mix',
+        tags: ['Global', 'Diverse founders'],
+        desc: 'Recurring grants for small businesses with priority for women, BIPOC, LGBTQ+, and veteran founders.' },
+
+      // Charity / non-profit — global
+      { id: 'n1', audience: ['charity', 'nonprofit'], country: 'Global', title: 'MacArthur 100&Change', org: 'MacArthur Foundation',
+        amount: '$100M', deadline: 'Apr 2027', type: 'Mega-grant', match: 88,
+        icon: 'lightbulb', banner: 'bg-fresh',
+        tags: ['Global', 'Bold ideas'],
+        desc: 'Single $100M grant for a proposal that promises real progress on a critical problem of our time.' },
+      { id: 'n2', audience: ['charity', 'nonprofit'], country: 'United Kingdom', title: 'National Lottery Community Fund', org: 'TNLCF',
+        amount: '£300–£500k', deadline: 'Rolling', type: 'Government', match: 87,
+        icon: 'ticket', banner: 'bg-green',
+        tags: ['UK', 'Community'],
+        desc: 'Funds projects that build stronger UK communities — youth, environment, health, and more.' },
+      { id: 'n3', audience: ['charity', 'nonprofit'], country: 'Global', title: 'Bezos Earth Fund — Climate Equity', org: 'Bezos Earth Fund',
+        amount: 'Variable', deadline: 'Rolling', type: 'Foundation grant', match: 85,
+        icon: 'leaf', banner: 'bg-fresh',
+        tags: ['Global', 'Climate', 'Equity'],
+        desc: 'Funds organizations advancing climate justice and frontline community resilience.' },
+      { id: 'n4', audience: ['charity', 'nonprofit'], country: 'Global', title: 'Open Society Foundations', org: 'OSF',
+        amount: 'Variable', deadline: 'Rolling', type: 'Foundation grant', match: 84,
+        icon: 'handshake', banner: 'bg-deep',
+        tags: ['Global', 'Rights & justice'],
+        desc: 'Funds rights-based work in democracy, justice, equity, and economic justice across 120+ countries.' },
+      { id: 'n5', audience: ['charity', 'nonprofit'], country: 'Global', title: 'Wellcome Discovery Awards', org: 'Wellcome Trust',
+        amount: '£1M–£2.5M / 8 yrs', deadline: 'Rolling', type: 'Foundation grant', match: 82,
+        icon: 'health', banner: 'bg-mix',
+        tags: ['Global', 'Health research'],
+        desc: 'Long-term flexible funding for ambitious researchers across discovery science, mental health, infectious disease, climate & health.' },
+      { id: 'n6', audience: ['charity', 'nonprofit'], country: 'Global', title: 'Patagonia Action Works', org: 'Patagonia',
+        amount: '$5,000–$20,000', deadline: 'Apr 2026', type: 'Corporate giving', match: 81,
+        icon: 'mountain', banner: 'bg-green',
+        tags: ['Global', 'Environment'],
+        desc: 'Operating support for grassroots environmental groups in countries where Patagonia operates.' },
+      { id: 'n7', audience: ['nonprofit'], country: 'United States', title: 'Robert Wood Johnson Pioneer Grant', org: 'RWJF',
+        amount: 'Up to $500,000', deadline: 'Jul 2026', type: 'Foundation grant', match: 86,
+        icon: 'health', banner: 'bg-mix',
+        tags: ['US', 'Health'],
+        desc: 'Supports unconventional ideas with breakthrough potential to advance health and equity.' },
+      { id: 'n8', audience: ['charity', 'nonprofit'], country: 'India', title: 'Tata Trusts Programmatic Grants', org: 'Tata Trusts',
+        amount: '₹10L–₹5Cr', deadline: 'Rolling', type: 'Foundation grant', match: 83,
+        icon: 'shield', banner: 'bg-deep',
+        tags: ['India', 'Multi-sector'],
+        desc: 'Long-running programs funding nutrition, water, education, livelihoods, health, and rural upliftment.' },
+      { id: 'n9', audience: ['charity', 'nonprofit'], country: 'Global', title: 'Global Innovation Fund', org: 'GIF',
+        amount: '$50k–$15M', deadline: 'Rolling', type: 'Innovation grant', match: 80,
+        icon: 'dollar', banner: 'bg-fresh',
+        tags: ['Global', 'Low/middle income'],
+        desc: 'Stage-based investments in social innovations targeting the world\'s poorest people.' },
+    ];
+
+    /* ---- Filter by profile ----------------------------------------------------- */
+    const profile = FH.loadProfile();
+    const profileType = profile?.type || null;
+
+    function matchesProfile(o) {
+      if (!profileType) return true;
+      return o.audience.includes(profileType);
+    }
+    let deckData = OPPORTUNITIES.filter(matchesProfile)
+      .filter(o => !FH.loadList(FH.PASSED_KEY).includes(o.id))
+      .filter(o => !FH.loadList(FH.SAVED_KEY).find(s => s.id === o.id))
+      .sort((a, b) => b.match - a.match);
+
+    const greeting = document.getElementById('greeting');
+    const profLine = document.getElementById('profile-line');
+    if (profileType) {
+      const labels = { student: 'student', business: 'business', charity: 'charity', nonprofit: 'non-profit' };
+      const data = profile.data || {};
+      const name = data.firstName || data.orgName || data.businessName || 'there';
+      greeting.textContent = `Hi ${name}`;
+      profLine.textContent = `${deckData.length} live ${labels[profileType]} opportunities globally — ranked by AI match score. Swipe right and our agent applies.`;
+    } else {
+      greeting.textContent = 'Live demo feed';
+      profLine.textContent = 'Build a profile to personalize. Sample opportunities shown below.';
+    }
+
+    /* ---- Render deck ----------------------------------------------------------- */
+    const deckEl = document.getElementById('deck');
+    const savedCountEl = document.getElementById('saved-count');
+    const saved = FH.loadList(FH.SAVED_KEY);
+    savedCountEl.textContent = saved.length;
+    const TOP = 3;
+
+    function buildCard(o, depth) {
+      const card = document.createElement('div');
+      card.className = 'swipe-card';
+      card.dataset.id = o.id;
+      card.style.zIndex = 100 - depth;
+      const scale = 1 - (depth * 0.04);
+      const ty = depth * 10;
+      card.style.transform = `translateY(${ty}px) scale(${scale})`;
+      card.style.opacity = depth >= TOP ? 0 : 1;
+
+      card.innerHTML = `
+        <div class="banner ${o.banner || ''}">
+          <div class="banner-icon">${FH.icon(o.icon || 'globe')}</div>
+          <span class="banner-tag">${FH.escapeHtml(o.type)}</span>
+        </div>
+        <div class="body">
+          <span class="match">${o.match}% match</span>
+          <h3 class="title">${FH.escapeHtml(o.title)}</h3>
+          <p class="org">${FH.escapeHtml(o.org)}</p>
+          <div class="amount">${FH.escapeHtml(o.amount)}</div>
+          <div class="meta">
+            <div><div class="k">Deadline</div><div class="v">${FH.escapeHtml(o.deadline)}</div></div>
+            <div><div class="k">Region</div><div class="v">${FH.escapeHtml(o.country)}</div></div>
+          </div>
+          <p class="desc">${FH.escapeHtml(o.desc)}</p>
+          <div class="chip-group">
+            ${(o.tags||[]).map(t => `<span class="chip" style="cursor:default;">${FH.escapeHtml(t)}</span>`).join('')}
+          </div>
+        </div>
+        <div class="stamp like">APPLY</div>
+        <div class="stamp nope">SKIP</div>
+      `;
+      return card;
+    }
+
+    function renderDeck() {
+      deckEl.innerHTML = '';
+      if (deckData.length === 0) {
+        deckEl.innerHTML = `<div class="empty-deck">
+          <h3>You're caught up.</h3>
+          <p>Our AI is monitoring new global opportunities daily. Check <a href="saved.html">saved matches</a> or come back soon.</p>
+        </div>`;
+        return;
+      }
+      deckData.slice(0, TOP + 1).forEach((o, i) => deckEl.appendChild(buildCard(o, i)));
+      attachDragToTop();
+    }
+
+    function topCard() { return deckEl.querySelector('.swipe-card'); }
+
+    function attachDragToTop() {
+      const card = topCard();
+      if (!card) return;
+      let startX = 0, startY = 0, dx = 0, dy = 0, dragging = false;
+      const stampLike = card.querySelector('.stamp.like');
+      const stampNope = card.querySelector('.stamp.nope');
+      const body = card.querySelector('.body');
+
+      function onStart(e) {
+        if (e.target.closest && e.target.closest('.body')) {
+          if (body.scrollHeight > body.clientHeight) return;
+        }
+        dragging = true;
+        startX = (e.touches?.[0] || e).clientX;
+        startY = (e.touches?.[0] || e).clientY;
+        card.classList.add('dragging');
+      }
+      function onMove(e) {
+        if (!dragging) return;
+        const x = (e.touches?.[0] || e).clientX;
+        const y = (e.touches?.[0] || e).clientY;
+        dx = x - startX;
+        dy = y - startY;
+        if (Math.abs(dx) > 8) e.preventDefault?.();
+        const rot = dx * 0.06;
+        card.style.transform = `translate(${dx}px, ${dy}px) rotate(${rot}deg)`;
+        stampLike.style.opacity = Math.max(0, Math.min(1, dx / 80));
+        stampNope.style.opacity = Math.max(0, Math.min(1, -dx / 80));
+      }
+      function onEnd() {
+        if (!dragging) return;
+        dragging = false;
+        card.classList.remove('dragging');
+        const threshold = 100;
+        if (dx > threshold) flyOff('like');
+        else if (dx < -threshold) flyOff('nope');
+        else {
+          card.style.transform = '';
+          stampLike.style.opacity = 0;
+          stampNope.style.opacity = 0;
+        }
+      }
+
+      card.addEventListener('mousedown', onStart);
+      window.addEventListener('mousemove', onMove);
+      window.addEventListener('mouseup', onEnd);
+      card.addEventListener('touchstart', onStart, { passive: true });
+      window.addEventListener('touchmove', onMove, { passive: false });
+      window.addEventListener('touchend', onEnd);
+    }
+
+    function flyOff(direction, priority = false) {
+      const card = topCard();
+      if (!card) return;
+      const id = card.dataset.id;
+      const opp = OPPORTUNITIES.find(o => o.id === id);
+      const x = direction === 'like' ? window.innerWidth : -window.innerWidth;
+      card.style.transition = 'transform 0.45s ease, opacity 0.45s ease';
+      card.style.transform = `translate(${x}px, 60px) rotate(${direction === 'like' ? 25 : -25}deg)`;
+      card.style.opacity = 0;
+
+      if (direction === 'like') {
+        const list = FH.loadList(FH.SAVED_KEY);
+        if (!list.find(s => s.id === id)) {
+          list.push({ ...opp, savedAt: new Date().toISOString(), priority, status: 'queued' });
+          FH.saveList(FH.SAVED_KEY, list);
+        }
+        savedCountEl.textContent = list.length;
+      } else {
+        const list = FH.loadList(FH.PASSED_KEY);
+        if (!list.includes(id)) list.push(id);
+        FH.saveList(FH.PASSED_KEY, list);
+      }
+
+      setTimeout(() => {
+        deckData = deckData.filter(o => o.id !== id);
+        renderDeck();
+      }, 380);
+    }
+
+    document.getElementById('btn-like').addEventListener('click', () => flyOff('like'));
+    document.getElementById('btn-nope').addEventListener('click', () => flyOff('nope'));
+    document.getElementById('btn-star').addEventListener('click', () => flyOff('like', true));
+    document.getElementById('btn-info').addEventListener('click', () => {
+      const card = topCard();
+      if (!card) return;
+      const body = card.querySelector('.body');
+      body.scrollTo({ top: body.scrollHeight, behavior: 'smooth' });
+    });
+
+    document.querySelector('[data-edit-profile]').addEventListener('click', (e) => {
+      e.preventDefault();
+      if (!profileType) { window.location.href = 'index.html'; return; }
+      window.location.href = 'profile-' + profileType + '.html';
+    });
+
+    renderDeck();
+    FH.renderBottomNav('discover');
+  </script>
+</body>
+</html>
