@@ -899,9 +899,7 @@ body.landing-page::before {
   right: 0;
   width: 50%;
   height: 100%;
-  background:
-    radial-gradient(ellipse at 70% 30%, rgba(21, 163, 107, 0.18) 0%, transparent 60%),
-    linear-gradient(135deg, #d6f0e2 0%, #f3faf6 55%, #ffffff 100%);
+  background: linear-gradient(160deg, #0f7a4e 0%, #15a36b 35%, #5ecfa0 65%, #ffffff 100%);
   z-index: -1;
   pointer-events: none;
 }
@@ -910,9 +908,7 @@ body.landing-page::before {
     top: 0; right: 0; left: 0;
     width: 100%;
     height: 50%;
-    background:
-      radial-gradient(ellipse at 50% 30%, rgba(21, 163, 107, 0.20) 0%, transparent 60%),
-      linear-gradient(180deg, #d6f0e2 0%, #f3faf6 60%, #ffffff 100%);
+    background: linear-gradient(180deg, #0f7a4e 0%, #15a36b 35%, #5ecfa0 65%, #ffffff 100%);
   }
 }
 
