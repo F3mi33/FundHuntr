@@ -16,10 +16,7 @@
 </head>
 <body>
   <nav class="nav">
-    <a href="index.html" style="display:flex; align-items:center; gap:10px; color:inherit; text-decoration:none;" class="brand">
-      <div class="brand-mark" data-icon="brand"></div>
-      <span>FundHuntr</span>
-    </a>
+    <a href="index.html" class="brand-wordmark">FundHuntr</a>
     <div class="nav-links">
       <a class="nav-link hide-mobile" href="index.html">Switch type</a>
       <a class="nav-link" href="discover.html">Skip →</a>
@@ -33,7 +30,7 @@
           <div class="profile-icon" data-icon="graduation-cap"></div>
           <div>
             <h2>Student profile</h2>
-            <p>The richer your answers, the better our AI applies for you.</p>
+            <p>The richer your answers, the better the auto-apply.</p>
           </div>
         </div>
       </div>
@@ -54,9 +51,10 @@
   </main>
 
   <script src="app.js"></script>
+  <script src="mobile.js"></script>
   <script src="icons.js"></script>
   <script>
-    /* Country list — abbreviated to top regions; the AI agent expands as needed */
+    /* Country list — abbreviated to top regions; expanded as needed at runtime */
     const COUNTRIES = [
       'Argentina', 'Australia', 'Austria', 'Bangladesh', 'Belgium', 'Brazil', 'Cameroon',
       'Canada', 'Chile', 'China', 'Colombia', 'Czech Republic', 'Denmark', 'Egypt',
@@ -73,7 +71,7 @@
       steps: [
         {
           title: 'About you',
-          subtitle: 'Identity basics our AI uses to verify eligibility globally.',
+          subtitle: 'Identity basics used to verify eligibility globally.',
           fields: [
             { name: 'firstName', label: 'First name', type: 'text', required: true, autocomplete: 'given-name' },
             { name: 'lastName', label: 'Last name / surname', type: 'text', required: true, autocomplete: 'family-name' },
@@ -209,15 +207,15 @@
         },
         {
           title: 'Funding preferences',
-          subtitle: 'Tell our agent what to apply for and what to skip.',
+          subtitle: 'Tell FundHuntr what to apply for and what to skip.',
           fields: [
             { name: 'fundingTypes', label: 'Funding types of interest', type: 'chips-multi', full: true,
               options: ['Scholarships', 'Bursaries', 'Fellowships', 'Grants', 'Forgivable loans', 'Tuition reimbursement', 'Stipends', 'Travel grants', 'Research grants', 'Emergency / hardship aid'] },
             { name: 'minAmount', label: 'Minimum amount worth applying for', type: 'number', placeholder: '500', hint: 'In your selected currency.' },
-            { name: 'autoApply', label: 'Let our AI auto-apply?', type: 'chips', full: true,
+            { name: 'autoApply', label: 'Enable auto-apply?', type: 'chips', full: true,
               options: ['Yes — apply automatically when match >85%', 'Yes — but ask me to review first', 'Draft only — I\'ll submit', 'No — just show me matches'] },
             { name: 'willingToWriteEssay', label: 'Essay length you\'ll review', type: 'select',
-              options: ['Any length', 'Short essays only (<500 words)', 'AI-drafted only', 'Prefer no essays'] },
+              options: ['Any length', 'Short essays only (<500 words)', 'Auto-drafted only', 'Prefer no essays'] },
             { name: 'willingToInterview', label: 'Willing to interview?', type: 'select',
               options: ['Yes — any format', 'Video only', 'No'] },
             { name: 'deadlineHorizon', label: 'How far ahead can you apply?', type: 'select',

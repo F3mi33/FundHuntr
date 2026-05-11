@@ -9,25 +9,42 @@
 *.swp
 *.swo
 
-# Dependencies (when we add a build step)
+# Node / npm
 node_modules/
 package-lock.json
 yarn.lock
+npm-debug.log*
+
+# Capacitor — generated native projects (regenerated via `npx cap add ...`)
+ios/App/Pods/
+ios/App/build/
+ios/DerivedData/
+ios/App/output/
+android/.gradle/
+android/build/
+android/app/build/
+android/app/release/
+android/local.properties
+android/keystore.properties
+android/*.keystore
+android/*.jks
+*.apk
+*.aab
+*.ipa
 
 # Build output
 dist/
 build/
 .cache/
-
-# Logs
-*.log
-npm-debug.log*
+www/
 
 # Env / secrets
 .env
 .env.local
 .env.*.local
 *.pem
+google-services.json
+GoogleService-Info.plist
 
 # OS / temp
 Thumbs.db

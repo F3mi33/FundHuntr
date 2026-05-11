@@ -16,10 +16,7 @@
 </head>
 <body>
   <nav class="nav">
-    <a href="index.html" style="display:flex; align-items:center; gap:10px; color:inherit; text-decoration:none;" class="brand">
-      <div class="brand-mark" data-icon="brand"></div>
-      <span>FundHuntr</span>
-    </a>
+    <a href="index.html" class="brand-wordmark">FundHuntr</a>
     <div class="nav-links">
       <a class="nav-link hide-mobile" href="index.html">Switch type</a>
       <a class="nav-link" href="discover.html">Skip →</a>
@@ -33,7 +30,7 @@
           <div class="profile-icon" data-icon="heart" style="background: linear-gradient(135deg, #e23a3a, #b62828);"></div>
           <div>
             <h2>Charity profile</h2>
-            <p>The richer your answers, the better our AI applies for you.</p>
+            <p>The richer your answers, the better the auto-apply.</p>
           </div>
         </div>
       </div>
@@ -54,6 +51,7 @@
   </main>
 
   <script src="app.js"></script>
+  <script src="mobile.js"></script>
   <script src="icons.js"></script>
   <script>
     const COUNTRIES = [
@@ -162,14 +160,14 @@
         },
         {
           title: 'Funding need',
-          subtitle: 'What you\'re hoping our AI applies for.',
+          subtitle: 'What you\'re hoping to auto-apply for.',
           fields: [
             { name: 'fundingNeeded', label: 'Total funding need', type: 'number', placeholder: '150000', hint: 'In your selected currency.' },
             { name: 'fundingPurpose', label: 'Funding purpose', type: 'chips-multi', full: true,
               options: ['Program expansion', 'New program launch', 'Capacity building', 'Operations / overhead', 'Capital / equipment', 'Staff hires', 'Tech / digital', 'Research', 'Advocacy', 'Endowment', 'Emergency / disaster relief'] },
             { name: 'restrictedOk', label: 'Restricted funding OK?', type: 'select',
               options: ['Yes', 'Prefer unrestricted', 'Mix is fine'] },
-            { name: 'autoApply', label: 'Let our AI auto-apply?', type: 'chips', full: true,
+            { name: 'autoApply', label: 'Enable auto-apply?', type: 'chips', full: true,
               options: ['Yes — apply automatically when match >85%', 'Yes — but ask me to review first', 'Draft only — I\'ll submit', 'No — just show me matches'] },
             { name: 'reportingCapacity', label: 'Reporting capacity', type: 'select',
               options: ['Quarterly reporting OK', 'Annual reporting only', 'Light reporting preferred'] },

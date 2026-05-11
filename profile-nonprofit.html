@@ -16,10 +16,7 @@
 </head>
 <body>
   <nav class="nav">
-    <a href="index.html" style="display:flex; align-items:center; gap:10px; color:inherit; text-decoration:none;" class="brand">
-      <div class="brand-mark" data-icon="brand"></div>
-      <span>FundHuntr</span>
-    </a>
+    <a href="index.html" class="brand-wordmark">FundHuntr</a>
     <div class="nav-links">
       <a class="nav-link hide-mobile" href="index.html">Switch type</a>
       <a class="nav-link" href="discover.html">Skip →</a>
@@ -33,7 +30,7 @@
           <div class="profile-icon" data-icon="columns" style="background: linear-gradient(135deg, #15a36b, #e23a3a);"></div>
           <div>
             <h2>Non-profit / NGO profile</h2>
-            <p>The richer your answers, the better our AI applies for you.</p>
+            <p>The richer your answers, the better the auto-apply.</p>
           </div>
         </div>
       </div>
@@ -54,6 +51,7 @@
   </main>
 
   <script src="app.js"></script>
+  <script src="mobile.js"></script>
   <script src="icons.js"></script>
   <script>
     const COUNTRIES = [
@@ -165,7 +163,7 @@
         },
         {
           title: 'Funding ask',
-          subtitle: 'Help our AI surface and apply for the right opportunities.',
+          subtitle: 'Help FundHuntr surface and apply for the right opportunities.',
           fields: [
             { name: 'fundingNeeded', label: 'Funding need this year', type: 'number', placeholder: '500000', hint: 'In your selected currency.' },
             { name: 'fundingPurpose', label: 'Use of funds', type: 'chips-multi', full: true,
@@ -174,7 +172,7 @@
             { name: 'maxGrantSize', label: 'Maximum grant size to pursue', type: 'number', placeholder: '500000' },
             { name: 'grantTypes', label: 'Open to which grant types?', type: 'chips-multi', full: true,
               options: ['General operating', 'Project / restricted', 'Capacity building', 'Capital', 'Multi-year', 'Matching', 'Government', 'Multilateral / development bank', 'Corporate', 'Family foundation', 'Community foundation'] },
-            { name: 'autoApply', label: 'Let our AI auto-apply?', type: 'chips', full: true,
+            { name: 'autoApply', label: 'Enable auto-apply?', type: 'chips', full: true,
               options: ['Yes — apply automatically when match >85%', 'Yes — but ask me to review first', 'Draft only — I\'ll submit', 'No — just show me matches'] },
             { name: 'urgency', label: 'How urgent?', type: 'select',
               options: ['Within 30 days', 'Next 3 months', 'Next 6 months', 'Within 12 months'] },

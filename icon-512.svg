@@ -6,7 +6,6 @@
     </linearGradient>
   </defs>
   <rect width="512" height="512" rx="112" fill="url(#g)"/>
-  <path d="M256 392c-12-7-92-58-128-110-32-46-22-110 30-130 36-14 76 4 98 36 22-32 62-50 98-36 52 20 62 84 30 130-36 52-116 103-128 110z"
-        fill="#ffffff"/>
-  <circle cx="368" cy="144" r="34" fill="#e23a3a" stroke="#ffffff" stroke-width="6"/>
+  <text x="256" y="240" font-family="Inter, -apple-system, Helvetica, Arial, sans-serif" font-weight="800" font-size="128" fill="#ffffff" text-anchor="middle" letter-spacing="-4">Fund</text>
+  <text x="256" y="394" font-family="Inter, -apple-system, Helvetica, Arial, sans-serif" font-weight="800" font-size="128" fill="#ffffff" text-anchor="middle" letter-spacing="-4">Huntr</text>
 </svg>
